@@ -1,24 +1,13 @@
 import Docker from "dockerode";
 
 const docker = new Docker();
-
+import { PYTHON_BAN_KEYWORDS, python_container_config } from "./consts.js";
 const runCode = async (code, testCases, language) => {
   if (!code || typeof code !== "string") {
     throw new Error("Invalid code input");
   }
 
-  const blockedKeywords = [
-    "import os",
-    "import sys",
-    "import subprocess",
-    "open(",
-    "exec(",
-    "eval(",
-    "__import__",
-    "system",
-  ];
-
-  if (blockedKeywords.some((keyword) => code.includes(keyword))) {
+  if (PYTHON_BAN_KEYWORDS.some((keyword) => code.includes(keyword))) {
     throw new Error("Security violation: Prohibited code detected");
   }
 
@@ -39,20 +28,9 @@ for test in test_cases:
         print(f"Error: {str(e)}")
     print("-" * 40)`;
 
-  const container = await docker.createContainer({
-    Image: "tesla/python-runner",
-    Tty: true,
-    Cmd: ["python3", "-c", wrappedCode],
-    HostConfig: {
-      Memory: 50 * 1024 * 1024,
-      MemorySwap: -1,
-      NetworkMode: "none",
-      SecurityOpt: ["no-new-privileges"],
-      ReadonlyRootfs: true,
-    },
-
-    StopTimeout: 3,
-  });
+  const container = await docker.createContainer(
+    python_container_config(wrappedCode)
+  );
 
   try {
     await container.start();
@@ -81,16 +59,3 @@ const code = `def twoSum(nums, target):
             return [seen[complement], i]
         seen[num] = i
     return []`;
-
-const testCases = [
-  {
-    input: [[2, 7, 11, 15], 9],
-    expected: [0, 1],
-  },
-  {
-    input: [[3, 2, 4], 6],
-    expected: [1, 2],
-  },
-];
-
-runCode(code, testCases);
