@@ -39,22 +39,22 @@ for test in test_cases:
         print(f"Error: {str(e)}")
     print("-" * 40)`;
 
-  const container = await docker.createContainer({
-    Image: "tesla/python-runner",
-    Tty: true,
-    Cmd: ["python3", "-c", wrappedCode],
-    HostConfig: {
-      Memory: 50 * 1024 * 1024,
-      MemorySwap: -1,
-      NetworkMode: "none",
-      SecurityOpt: ["no-new-privileges"],
-      ReadonlyRootfs: true,
-    },
-
-    StopTimeout: 3,
-  });
-
   try {
+    const container = await docker.createContainer({
+      Image: "tesla/python-runner",
+      Tty: true,
+      Cmd: ["python3", "-c", wrappedCode],
+      HostConfig: {
+        Memory: 50 * 1024 * 1024,
+        MemorySwap: -1,
+        NetworkMode: "none",
+        SecurityOpt: ["no-new-privileges"],
+        ReadonlyRootfs: true,
+      },
+
+      StopTimeout: 3,
+    });
+
     await container.start();
     const stream = await container.logs({
       stdout: true,

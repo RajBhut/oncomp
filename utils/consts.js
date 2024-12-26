@@ -10,7 +10,7 @@ const PYTHON_BAN_KEYWORDS = [
 ];
 const python_container_config = (wrappedCode) => {
   return {
-    Image: "tesla/python-runner",
+    Image: "python:3.9-slim",
     Tty: true,
     Cmd: ["python3", "-c", wrappedCode],
     HostConfig: {

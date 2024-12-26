@@ -4,6 +4,7 @@ const docker = new Docker();
 
 const run_python_code = async (code) => {
   if (!code || typeof code !== "string") {
+    console.log("Invalid code input");
     throw new Error("Invalid code input");
   }
 
@@ -13,16 +14,18 @@ const run_python_code = async (code) => {
   const container = await docker.createContainer(python_container_config(code));
   await container.start();
   const stream = await container.logs({
-    stdout: true,
+    stdout: true, 
     stderr: true,
     follow: true,
   });
+  let out = "";
   stream.on("data", (chunk) => {
-    console.log(chunk.toString("utf8").trim());
+    out += chunk.toString("utf8").trim();
   });
 
   await container.stop();
   await container.remove();
+  return out;
 };
 
 export { run_python_code };

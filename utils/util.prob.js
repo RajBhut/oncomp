@@ -2,7 +2,7 @@ import Docker from "dockerode";
 
 const docker = new Docker();
 import { PYTHON_BAN_KEYWORDS, python_container_config } from "./consts.js";
-const runCode = async (code, testCases, language) => {
+const runCode_problem = async (code, testCases, testcode, language) => {
   if (!code || typeof code !== "string") {
     throw new Error("Invalid code input");
   }
@@ -14,24 +14,16 @@ const runCode = async (code, testCases, language) => {
   const wrappedCode = `${code.trim()}
 
 
-test_cases = ${JSON.stringify(testCases)}
-for test in test_cases:
-    nums, target = test['input']
-    try:
-        result = twoSum(nums, target)
-        print(f"Test Case:")
-        print(f"Input: nums={nums}, target={target}")
-        print(f"Output: {result}")
-        print(f"Expected: {test['expected']}")
-        print(f"{'✓ Passed' if result == test['expected'] else '✗ Failed'}")
-    except Exception as e:
-        print(f"Error: {str(e)}")
-    print("-" * 40)`;
+test_cases = ${testCases}
+
+
+
+${testcode}`;
 
   const container = await docker.createContainer(
     python_container_config(wrappedCode)
   );
-
+  let out = "";
   try {
     await container.start();
     const stream = await container.logs({
@@ -41,21 +33,22 @@ for test in test_cases:
     });
 
     stream.on("data", (chunk) => {
-      const cleanOutput = chunk.toString("utf8").trim();
-      if (cleanOutput) console.log(cleanOutput);
+      out += chunk.toString("utf8").trim();
     });
   } catch (error) {
     console.error("Execution error:", error);
   } finally {
     await container.stop();
     await container.remove();
+    return out;
   }
 };
-const code = `def twoSum(nums, target):
-    seen = {}
-    for i, num in enumerate(nums):
-        complement = target - num
-        if complement in seen:
-            return [seen[complement], i]
-        seen[num] = i
-    return []`;
+// const code = `def twoSum(nums, target):
+//     seen = {}
+//     for i, num in enumerate(nums):
+//         complement = target - num
+//         if complement in seen:
+//             return [seen[complement], i]
+//         seen[num] = i
+//     return []`;
+export { runCode_problem };
