@@ -11,10 +11,11 @@ const run_python_code = async (code) => {
   if (PYTHON_BAN_KEYWORDS.some((keyword) => code.includes(keyword))) {
     throw new Error("Security violation: Prohibited code detected");
   }
+
   const container = await docker.createContainer(python_container_config(code));
   await container.start();
   const stream = await container.logs({
-    stdout: true, 
+    stdout: true,
     stderr: true,
     follow: true,
   });

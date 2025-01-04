@@ -8,6 +8,7 @@ const PYTHON_BAN_KEYWORDS = [
   "__import__",
   "system",
 ];
+
 const python_container_config = (wrappedCode) => {
   return {
     Image: "python:3.9-slim",

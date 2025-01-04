@@ -2,6 +2,7 @@ import express from "express";
 import { run_python_code } from "./utils/util.compile.js";
 import cors from "cors";
 import { runCode_problem } from "./utils/util.prob.js";
+import { checkAndPullImage } from "./utils/base.js";
 const app = express();
 app.use(
   cors({
@@ -9,7 +10,7 @@ app.use(
   })
 );
 app.use(express.json());
-
+checkAndPullImage("python:3.9-slim");
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
@@ -17,9 +18,14 @@ app.post("/prob", async (req, res) => {
   try {
     let { code, testcase, testcode } = req.body;
 
-    code = atob(code);
-    testcase = atob(testcase);
-    testcode = atob(testcode);
+    code = decodeURIComponent(atob(code));
+
+    testcase = decodeURIComponent(atob(testcase));
+    testcode = decodeURIComponent(atob(testcode));
+
+    // code = atob(code);
+    // testcase = atob(testcase);
+    // testcode = atob(testcode);
 
     if (!req.body) {
       return res.status(400).send({ error: "Request body is required" });
@@ -33,6 +39,7 @@ app.post("/prob", async (req, res) => {
     res.status(500).send({ error: "Internal server error" });
   }
 });
+
 app.post("/", async (req, res) => {
   try {
     let { code } = req.body;
