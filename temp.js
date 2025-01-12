@@ -1,5 +1,10 @@
 import express from "express";
-import { run_python_code } from "./utils/util.compile.js";
+import {
+  run_c_code,
+  run_java_code,
+  run_js_code,
+  run_python_code,
+} from "./utils/util.compile.js";
 import cors from "cors";
 import { runCode_problem } from "./utils/util.prob.js";
 import { checkAndPullImage } from "./utils/base.js";
@@ -16,22 +21,18 @@ app.get("/", (req, res) => {
 });
 app.post("/prob", async (req, res) => {
   try {
-    let { code, testcase, testcode } = req.body;
+    let { code, testcase, testcode, language } = req.body;
 
     code = decodeURIComponent(atob(code));
 
     testcase = decodeURIComponent(atob(testcase));
     testcode = decodeURIComponent(atob(testcode));
 
-    // code = atob(code);
-    // testcase = atob(testcase);
-    // testcode = atob(testcode);
-
     if (!req.body) {
       return res.status(400).send({ error: "Request body is required" });
     }
 
-    const r = await runCode_problem(code, testcase, testcode);
+    const r = await runCode_problem(code, testcase, testcode, language);
 
     res.status(200).send(r);
   } catch (error) {
@@ -42,17 +43,20 @@ app.post("/prob", async (req, res) => {
 
 app.post("/", async (req, res) => {
   try {
-    let { code } = req.body;
+    let { code, language } = req.body;
 
-    code = atob(code);
-    console.log(code);
+    code = decodeURIComponent(atob(code));
+
     if (!req.body) {
       return res.status(400).send({ error: "Request body is required" });
     }
-
-    const r = await run_python_code(code);
-
-    res.status(200).send(r);
+    let re = null;
+    if (language == "java") {
+      re = await run_java_code(code);
+    } else {
+      re = await run_python_code(code);
+    }
+    res.status(200).send(re);
   } catch (error) {
     console.error("Error:", error);
     res.status(500).send({ error: "Internal server error" });
