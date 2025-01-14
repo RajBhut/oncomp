@@ -26,10 +26,12 @@ const runCode = async (code, testCases, language) => {
 
 
 test_cases = ${JSON.stringify(testCases)}
+s = Solution()
 for test in test_cases:
     nums, target = test['input']
     try:
-        result = twoSum(nums, target)
+
+        result = s.twoSum(nums, target)
         print(f"Test Case:")
         print(f"Input: nums={nums}, target={target}")
         print(f"Output: {result}")
