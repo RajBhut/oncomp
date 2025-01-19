@@ -19,16 +19,16 @@ app.use(
   })
 );
 app.use(express.json());
-checkAndPullImage("python:3.9-slim");
+await checkAndPullImage("python:3.9-slim");
+await checkAndPullImage("openjdk:11-slim");
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 app.post("/prob", async (req, res) => {
   try {
     let { code, testcase, testcode, language } = req.body;
-
+    console.log(language);
     code = decodeURIComponent(atob(code));
-
     testcase = decodeURIComponent(atob(testcase));
     testcode = decodeURIComponent(atob(testcode));
 
@@ -50,7 +50,7 @@ app.post("/", async (req, res) => {
     let { code, language } = req.body;
 
     code = decodeURIComponent(atob(code));
-
+    console.log(language);
     if (!req.body) {
       return res.status(400).send({ error: "Request body is required" });
     }
