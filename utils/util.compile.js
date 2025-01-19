@@ -53,7 +53,7 @@ const run_java_code = async (code) => {
   });
   let out = "";
   stream.on("data", (chunk) => {
-    out += chunk.toString("utf8").trim();
+    out += chunk.toString("utf8");
   });
 
   await container.stop();
@@ -79,7 +79,7 @@ const run_js_code = async (code) => {
   });
   let out = "";
   stream.on("data", (chunk) => {
-    out += chunk.toString("utf8").trim();
+    out += chunk.toString("utf8");
   });
 
   await container.stop();
@@ -104,7 +104,7 @@ const run_c_code = async (code) => {
   });
   let out = "";
   stream.on("data", (chunk) => {
-    out += chunk.toString("utf8").trim();
+    out += chunk.toString("utf8");
   });
 
   await container.stop();
@@ -129,7 +129,7 @@ const run_cpp_code = async (code) => {
   });
   let out = "";
   stream.on("data", (chunk) => {
-    out += chunk.toString("utf8").trim();
+    out += chunk.toString("utf8");
   });
 
   await container.stop();
