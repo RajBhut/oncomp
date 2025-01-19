@@ -28,7 +28,7 @@ const run_python_code = async (code) => {
   });
   let out = "";
   stream.on("data", (chunk) => {
-    out += chunk.toString("utf8").trim();
+    out += chunk.toString("utf8");
   });
 
   await container.stop();

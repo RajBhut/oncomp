@@ -54,7 +54,7 @@ ${testcode}`;
     });
 
     stream.on("data", (chunk) => {
-      out += chunk.toString("utf8").trim();
+      out += chunk.toString("utf8");
     });
   } catch (error) {
     console.error("Execution error:", error);
