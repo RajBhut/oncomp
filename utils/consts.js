@@ -33,7 +33,7 @@ const java_container_config = (wrappedCode) => {
     Cmd: [
       "sh",
       "-c",
-      `echo "${escapedCode}" > Solution.java && javac Solution.java && java Solution`,
+      `echo "${escapedCode}" > Solution.java && javac Solution.java && java Run`,
     ],
     HostConfig: {
       Memory: 50 * 1024 * 1024,
