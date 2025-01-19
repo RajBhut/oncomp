@@ -11,7 +11,11 @@ import { checkAndPullImage } from "./utils/base.js";
 const app = express();
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: [
+      "http://localhost:5173",
+      "https://oncomp.rajb.codes",
+      "https://on-comp-frontend.vercel.app",
+    ],
   })
 );
 app.use(express.json());
