@@ -24,7 +24,7 @@ const runCode_problem = async (code, testCases, testcode, language) => {
   const wrappedCode = `${code.trim()}
 
 
-test_cases = ${testCases}
+${testCases}
 
 
 
