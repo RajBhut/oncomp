@@ -19,7 +19,7 @@ app.use(
   })
 );
 app.use(express.json());
-await checkAndPullImage("python:3.9-slim");
+await checkAndPullImage("python:3.9-alpine");
 await checkAndPullImage("openjdk:11-slim");
 app.get("/", (req, res) => {
   res.send("Hello World!");
