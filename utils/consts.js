@@ -87,7 +87,7 @@ const c_container_config = (wrappedCode) => {
 
 const js_container_config = (wrappedCode) => {
   return {
-    Image: "node:alpinenode:alpine",
+    Image: "node:alpine",
     Tty: true,
     Cmd: ["node", "-e", wrappedCode],
     HostConfig: {

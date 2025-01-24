@@ -21,6 +21,7 @@ app.use(
 app.use(express.json());
 await checkAndPullImage("python:3.9-alpine");
 await checkAndPullImage("openjdk:11-slim");
+await checkAndPullImage("node:alpine");
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
@@ -57,6 +58,8 @@ app.post("/", async (req, res) => {
     let re = null;
     if (language == "java") {
       re = await run_java_code(code);
+    } else if (language == "javascript") {
+      re = await run_js_code(code);
     } else {
       re = await run_python_code(code);
     }

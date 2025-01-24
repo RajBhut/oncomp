@@ -69,9 +69,9 @@ const run_js_code = async (code) => {
   }
 
   const container = await docker.createContainer(js_container_config(code));
-  console.log("after creating");
+
   await container.start();
-  console.log("after start");
+
   const stream = await container.logs({
     stdout: true,
     stderr: true,
