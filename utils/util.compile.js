@@ -1,4 +1,5 @@
 import Docker from "dockerode";
+import stripAnsi from "strip-ansi";
 import {
   python_container_config,
   PYTHON_BAN_KEYWORDS,
@@ -84,6 +85,7 @@ const run_js_code = async (code) => {
 
   await container.stop();
   await container.remove();
+  out = stripAnsi(out);
   return out;
 };
 
