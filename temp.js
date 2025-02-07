@@ -22,6 +22,13 @@ app.use(express.json());
 await checkAndPullImage("python:3.9-alpine");
 await checkAndPullImage("openjdk:11-slim");
 await checkAndPullImage("node:alpine");
+
+setInterval(async () => {
+  await checkAndPullImage("python:3.9-alpine");
+  await checkAndPullImage("openjdk:11-slim");
+  await checkAndPullImage("node:alpine");
+}, 1000 * 60 * 28);
+
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
