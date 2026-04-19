@@ -9,7 +9,7 @@ import {
   js_container_config,
   c_container_config,
   cpp_container_config,
-} from "./consts.js";
+} from "./containerConfig.js";
 
 const runCode_problem = async (code, testCases, testcode, language) => {
   if (!code || typeof code !== "string") {
@@ -64,12 +64,5 @@ ${testcode}`;
     return out;
   }
 };
-// const code = `def twoSum(nums, target):
-//     seen = {}
-//     for i, num in enumerate(nums):
-//         complement = target - num
-//         if complement in seen:
-//             return [seen[complement], i]
-//         seen[num] = i
-//     return []`;
+
 export { runCode_problem };

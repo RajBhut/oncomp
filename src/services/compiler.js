@@ -7,7 +7,8 @@ import {
   c_container_config,
   cpp_container_config,
   js_container_config,
-} from "./consts.js";
+} from "./containerConfig.js";
+
 const docker = new Docker();
 
 const run_python_code = async (code) => {
@@ -37,8 +38,6 @@ const run_python_code = async (code) => {
   return out;
 };
 
-export { run_python_code };
-
 const run_java_code = async (code) => {
   if (!code || typeof code !== "string") {
     console.log("Invalid code input");
@@ -62,7 +61,6 @@ const run_java_code = async (code) => {
   return out;
 };
 
-export { run_java_code };
 const run_js_code = async (code) => {
   if (!code || typeof code !== "string") {
     console.log("Invalid code input");
@@ -89,8 +87,6 @@ const run_js_code = async (code) => {
   return out;
 };
 
-export { run_js_code };
-
 const run_c_code = async (code) => {
   if (!code || typeof code !== "string") {
     console.log("Invalid code input");
@@ -113,8 +109,6 @@ const run_c_code = async (code) => {
   await container.remove();
   return out;
 };
-
-export { run_c_code };
 
 const run_cpp_code = async (code) => {
   if (!code || typeof code !== "string") {
@@ -139,4 +133,4 @@ const run_cpp_code = async (code) => {
   return out;
 };
 
-export { run_cpp_code };
+export { run_python_code, run_java_code, run_js_code, run_c_code, run_cpp_code };
